@@ -41,7 +41,7 @@ resource "snowflake_user" "user" {
 
   lifecycle {
     precondition {
-      condition     = contains(local.listOfNames, var.wh) || (trim(var.wh, " ") == "")
+      condition     = contains(local.listOfNames, coalesce(var.wh, " ")) || var.wh == null
       error_message = "The selected warehouse does not exist"
     }
   }
