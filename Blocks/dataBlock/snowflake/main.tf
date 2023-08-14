@@ -30,6 +30,7 @@ resource "snowflake_warehouse" "warehouse_2" {
 }
 
 locals{
+#  listOfNames = concat(tolist([for v in data.snowflake_warehouses.current.warehouses : v.name]), [""])
   listOfNames = tolist([for v in data.snowflake_warehouses.current.warehouses : v.name])
 }
 
@@ -40,7 +41,7 @@ resource "snowflake_user" "user" {
 
   lifecycle {
     precondition {
-      condition     = contains(local.listOfNames, "TF_DEMO_WH_x")
+      condition     = contains(local.listOfNames, var.wh) || (trim(var.wh, " ") == "")
       error_message = "The selected warehouse does not exist"
     }
   }
